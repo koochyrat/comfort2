@@ -18,7 +18,7 @@ Edit comfort2.py:
 - set COMFORTIP, COMFORTPORT to your Comfort ETH03 IP address
 - set PINCODE to your Comfort PIN code
 
-# Home Assistant Setup
+# MQTT
 
 The following MQTT topics are published:
 ```
