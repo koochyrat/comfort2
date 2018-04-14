@@ -6,6 +6,9 @@ With Home Assistant, you can further extend the Comfort system with more complex
 
 You should be familiar with configuring Comfort using the Comfigurator tool first. Comfigurator, Comfort manuals and protocol definition available at www.cytech.biz
 
+![homeassistant](homeassistant.png)
+![hadashboard](hadashboard.png)
+
 # Installation
 
 Requires paho-mqtt client. Install using
