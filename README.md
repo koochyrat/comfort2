@@ -66,6 +66,7 @@ comfort2/flag255/set
 ```
 
 # Example Home Assistant configuration
+> configuration.yaml:
 ```
 alarm_control_panel:
   - platform: mqtt
@@ -130,6 +131,26 @@ switch:
     payload_not_available: "0"
 ```
 
+Sends notifications to your phone if alarm state changes
+> automations.yaml:
+```
+- action:
+    service: notify.notify
+    data_template:
+      title: '{{ trigger.to_state.attributes.friendly_name }}'
+      message: "{% if is_state('alarm_control_panel.comfort_alarm', 'armed_home')\
+        \ %}\n    Armed Home\n{% elif is_state('alarm_control_panel.comfort_alarm',\
+        \ 'armed_away') %}\n    Armed Away\n{% elif is_state('alarm_control_panel.comfort_alarm',\
+        \ 'disarmed') %}\n    Disarmed\n{% elif is_state('alarm_control_panel.comfort_alarm',\
+        \ 'pending') %}\n    Pending\n{% elif is_state('alarm_control_panel.comfort_alarm',\
+        \ 'triggered') %}\n    Triggered\n{% else %}\n    {{ trigger.to_state.state\
+        \ }}\n{% endif %}\n"
+  id: alarm_state_notification
+  alias: Alarm State Notification
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.comfort_alarm
+```
 # Running
 
 Make sure nothing else is connected to your Comfort system via ETH03 as only one connection is allowed.
