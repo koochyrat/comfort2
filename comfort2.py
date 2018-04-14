@@ -281,7 +281,7 @@ class Comfort2(mqtt.Client):
             self.publish(ALARMMESSAGETOPIC, "")
 
     def run(self):
-        self.connect(self.mqtt_ip, 1883, 60)
+        self.connect(self.mqtt_ip, self.mqtt_port, 60)
         self.loop_start()
         self.publish(ALARMAVAILABLETOPIC, 0)
         try:
