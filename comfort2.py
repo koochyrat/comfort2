@@ -355,8 +355,8 @@ class Comfort2(mqtt.Client):
                                 print("flag %d state %d" % (flMsg.flag, flMsg.state))
                                 self.publish(ALARMFLAGTOPIC % flMsg.flag, flMsg.state)
                 except socket.error as v:
-                    errorcode = v[0]
-                    print("socket error "+errorcode)
+                    #errorcode = v[0]
+                    print("socket error "+str(v))
                     #raise
                 print("lost connection to comfort, reconnecting...")
                 self.publish(ALARMAVAILABLETOPIC, 0)
