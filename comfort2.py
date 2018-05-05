@@ -135,12 +135,12 @@ class ComfortAMSystemAlarmReport(object):
         elif self.alarm == 8: self.message = "Disarm"; self.triggered = False
         elif self.alarm == 9: self.message = "Arm"; self.triggered = False
         elif self.alarm == 10: self.message = "Tamper"
-        elif self.alarm == 12: self.message = "Entry Warning, Zone "+str(self.parameter)
+        elif self.alarm == 12: self.message = "Entry Warning, Zone "+str(self.parameter); self.triggered = False
         elif self.alarm == 13: self.message = "Alarm Abort"; self.triggered = False
         elif self.alarm == 14: self.message = "Siren Tamper"
         elif self.alarm == 15: self.message = "Bypass, Zone "+str(self.parameter); self.triggered = False
         elif self.alarm == 17: self.message = "Dial Test"; self.triggered = False
-        elif self.alarm == 19: self.message = "Entry Alert, Zone "+str(self.parameter)
+        elif self.alarm == 19: self.message = "Entry Alert, Zone "+str(self.parameter); self.triggered = False
         elif self.alarm == 20: self.message = "Fire"
         elif self.alarm == 21: self.message = "Panic"
         elif self.alarm == 22: self.message = "GSM Trouble"
