@@ -16,7 +16,13 @@ Requires paho-mqtt client. Install using
 pip3 install paho-mqtt
 ```
 Edit comfort2.py:
-
+```
+MQTTBROKERIP = "localhost"
+MQTTBROKERPORT = 1883
+COMFORTIP = "192.168.123.88"
+COMFORTPORT = 8008
+PINCODE = "1234"
+```
 - set MQTTBROKERIP, MQTTBROKERPORT to your Home Assistant IP address
 - set COMFORTIP, COMFORTPORT to your Comfort ETH03 IP address
 - set PINCODE to your Comfort PIN code
