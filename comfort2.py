@@ -15,6 +15,7 @@
 import select
 import socket
 import time
+import datetime
 import threading
 from datetime import timedelta
 import homeassistant
@@ -267,6 +268,9 @@ class Comfort2(mqtt.Client):
                         yield line
         return
     
+    def login(self):
+        self.comfortsock.sendall(("\x03LI"+self.comfort_pincode+"\r").encode())
+
     def readcurrentstate(self):
         if self.connected == True:
             #get security mode
@@ -280,6 +284,11 @@ class Comfort2(mqtt.Client):
             self.publish(ALARMAVAILABLETOPIC, 1)
             self.publish(ALARMMESSAGETOPIC, "")
 
+    def setdatetime(self):
+        if self.connected == True:  #set current date and time
+            now = datetime.datetime.now()
+            self.comfortsock.sendall(("\x03DT%02d%02d%02d%02d%02d%02d\r" % (now.year, now.month, now.day, now.hour, now.minute, now.second)).encode())
+
     def run(self):
         self.connect(self.mqtt_ip, self.mqtt_port, 60)
         self.loop_start()
@@ -291,7 +300,7 @@ class Comfort2(mqtt.Client):
                     print("connecting to "+self.comfort_ip+" "+str(self.comfort_port))
                     self.comfortsock.connect((self.comfort_ip, self.comfort_port))
                     self.comfortsock.settimeout(TIMEOUT.seconds)
-                    self.comfortsock.sendall(("\x03LI"+self.comfort_pincode+"\r").encode())
+                    self.login()
 
                     for line in self.readlines():
                         if line[1:] != "cc00":
@@ -302,6 +311,7 @@ class Comfort2(mqtt.Client):
                                 self.connected = True
                                 #client.publish(ALARMSTATETOPIC, "disarmed")
                                 self.publish(ALARMCOMMANDTOPIC, "comm test")
+                                self.setdatetime()
                                 self.readcurrentstate()
                             elif line[1:3] == "IP":
                                 ipMsg = ComfortIPInputActivationReport(line[1:])
@@ -354,6 +364,10 @@ class Comfort2(mqtt.Client):
                                 flMsg = ComfortFLFlagActivationReport(line[1:])
                                 print("flag %d state %d" % (flMsg.flag, flMsg.state))
                                 self.publish(ALARMFLAGTOPIC % flMsg.flag, flMsg.state)
+                            elif line[1:3] == "RS":
+                                #on rare occassions comfort ucm might get reset (RS11), our session is no longer valid, need to relogin
+                                print("reset detected")
+                                self.login()
                 except socket.error as v:
                     #errorcode = v[0]
                     print("socket error "+str(v))
