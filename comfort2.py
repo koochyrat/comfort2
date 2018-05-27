@@ -52,6 +52,13 @@ BUFFER_SIZE = 4096
 TIMEOUT = timedelta(seconds=30) #Comfort will disconnect if idle for 120 secs, so make sure this is less than that
 RETRY = timedelta(seconds=5)
 
+class ComfortLUUserLoggedIn(object):
+    def __init__(self, datastr="", user=0):
+        if datastr:
+            self.user = int(datastr[2:4], 16)
+        else:
+            self.user = int(user)
+
 class ComfortIPInputActivationReport(object):
     def __init__(self, datastr="", input=0, state=0):
         if datastr:
@@ -306,13 +313,15 @@ class Comfort2(mqtt.Client):
                         if line[1:] != "cc00":
                             print(line)
                         if line[0] == "\x03":   #check for valid prefix
-                            if line[1:] == "LU01":
-                                print("login ok")
-                                self.connected = True
-                                #client.publish(ALARMSTATETOPIC, "disarmed")
-                                self.publish(ALARMCOMMANDTOPIC, "comm test")
-                                self.setdatetime()
-                                self.readcurrentstate()
+                            if line[1:3] == "LU":
+                                luMsg = ComfortLUUserLoggedIn(line[1:])
+                                if luMsg.user != 0:
+                                    print("login ok")
+                                    self.connected = True
+                                    #client.publish(ALARMSTATETOPIC, "disarmed")
+                                    self.publish(ALARMCOMMANDTOPIC, "comm test")
+                                    self.setdatetime()
+                                    self.readcurrentstate()
                             elif line[1:3] == "IP":
                                 ipMsg = ComfortIPInputActivationReport(line[1:])
                                 print("input %d state %d" % (ipMsg.input, ipMsg.state))
