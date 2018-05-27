@@ -45,6 +45,8 @@ ALARMFLAGCOMMANDTOPIC = DOMAIN+"/flag%d/set" #flag1/set,flag2/set,... flag255/se
 
 MQTTBROKERIP = "localhost"
 MQTTBROKERPORT = 1883
+MQTTUSERNAME = ""
+MQTTPASSWORD = ""
 COMFORTIP = "192.168.123.88"
 COMFORTPORT = 8008
 PINCODE = "1234"
@@ -163,13 +165,14 @@ class ComfortEXEntryExitDelayStarted(object):
         self.delay = int(data[4:6],16)
 
 class Comfort2(mqtt.Client):
-    def init(self, mqtt_ip, mqtt_port, comfort_ip, comfort_port, comfort_pincode):
+    def init(self, mqtt_ip, mqtt_port, mqtt_username, mqtt_password, comfort_ip, comfort_port, comfort_pincode):
         self.mqtt_ip = mqtt_ip
         self.mqtt_port = mqtt_port
         self.comfort_ip = comfort_ip
         self.comfort_port = comfort_port
         self.comfort_pincode = comfort_pincode
         self.connected = False
+        self.username_pw_set(mqtt_username, mqtt_password)
 
     # The callback for when the client receives a CONNACK response from the server.
     def on_connect(self, client, userdata, flags, rc):
@@ -389,5 +392,5 @@ class Comfort2(mqtt.Client):
             infot.wait_for_publish()
 
 mqttc = Comfort2(DOMAIN)
-mqttc.init(MQTTBROKERIP, MQTTBROKERPORT, COMFORTIP, COMFORTPORT, PINCODE)
+mqttc.init(MQTTBROKERIP, MQTTBROKERPORT, MQTTUSERNAME, MQTTPASSWORD, COMFORTIP, COMFORTPORT, PINCODE)
 mqttc.run()

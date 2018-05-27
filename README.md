@@ -19,11 +19,14 @@ Edit comfort2.py:
 ```
 MQTTBROKERIP = "localhost"
 MQTTBROKERPORT = 1883
+MQTTUSERNAME = ""
+MQTTPASSWORD = ""
 COMFORTIP = "192.168.123.88"
 COMFORTPORT = 8008
 PINCODE = "1234"
 ```
 - set MQTTBROKERIP, MQTTBROKERPORT to your Home Assistant IP address
+- set MQTTUSERNAME, MQTTPASSWORD if your Home Assistant MQTT broker requires authentication
 - set COMFORTIP, COMFORTPORT to your Comfort ETH03 IP address
 - set PINCODE to your Comfort PIN code
 
