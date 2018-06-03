@@ -314,7 +314,7 @@ class Comfort2(mqtt.Client):
 
                     for line in self.readlines():
                         if line[1:] != "cc00":
-                            print(line)
+                            print(line[1:])
                         if line[0] == "\x03":   #check for valid prefix
                             if line[1:3] == "LU":
                                 luMsg = ComfortLUUserLoggedIn(line[1:])
