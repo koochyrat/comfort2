@@ -300,7 +300,7 @@ class Comfort2(mqtt.Client):
             self.comfortsock.sendall(("\x03DT%02d%02d%02d%02d%02d%02d\r" % (now.year, now.month, now.day, now.hour, now.minute, now.second)).encode())
 
     def run(self):
-        self.connect(self.mqtt_ip, self.mqtt_port, 60)
+        self.connect_async(self.mqtt_ip, self.mqtt_port, 60)
         self.loop_start()
         self.publish(ALARMAVAILABLETOPIC, 0)
         try:
