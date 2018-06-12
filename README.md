@@ -13,7 +13,7 @@ You should be familiar with configuring Comfort using the Comfigurator tool firs
 
 Requires paho-mqtt client. Install using
 ```
-pip3 install paho-mqtt
+sudo pip3 install paho-mqtt
 ```
 Edit comfort2.py:
 ```
@@ -167,3 +167,34 @@ Make sure nothing else is connected to your Comfort system via ETH03 as only one
 python3 comfort2.py
 ```
 It should automatically connect to both Comfort and Home Assistant. It will hold the connection to Comfort so you cannot use Comfigurator or anything that connects to Comfort. Use Ctrl-C to exit.
+
+# Running as a service
+
+To autostart and run in the background as a systemd service (as pi user), create
+```
+sudo nano -w /etc/systemd/system/comfort2@pi.service
+```
+with the following content:
+```
+[Unit]
+Description=Comfort 2
+After=home-assistant@pi.service
+
+[Service]
+Type=simple
+User=%i
+ExecStart=/usr/bin/python3 /home/pi/comfort2/comfort2.py
+
+[Install]
+WantedBy=multi-user.target
+```
+
+The startup order doesn't really matter as it will auto-connect to your Home Assistant. Then do:
+
+```
+sudo systemctl --system daemon-reload
+sudo systemctl enable comfort2@pi.service
+sudo systemctl start comfort2@pi.service
+```
+
+It should then be all working. Subsequently on reboot it will automatically start without having to do anything.
