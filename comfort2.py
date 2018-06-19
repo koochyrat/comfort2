@@ -18,7 +18,6 @@ import time
 import datetime
 import threading
 from datetime import timedelta
-import homeassistant
 import paho.mqtt.client as mqtt
 
 DOMAIN = "comfort2"
