@@ -169,7 +169,7 @@ Make sure nothing else is connected to your Comfort system via ETH02/ETH03 on th
 ```
 python3 comfort2.py
 ```
-It should automatically connect to both Comfort and Home Assistant. It will hold the connection to Comfort so you cannot use Comfigurator or anything that connects to Comfort. Use Ctrl-C to exit.
+It should automatically connect to both Comfort and Home Assistant. It will hold the connection to Comfort so you cannot use Comfigurator or anything that connects to Comfort on the specified port. Use Ctrl-C to exit.
 
 # Running as a service
 
