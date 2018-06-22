@@ -15,6 +15,9 @@ Requires paho-mqtt client. Install using
 ```
 sudo pip3 install paho-mqtt
 ```
+
+Download and save comfort2.py to your home folder /home/pi or anywhere else you prefer.
+
 Edit comfort2.py:
 ```
 MQTTBROKERIP = "localhost"
