@@ -1,6 +1,6 @@
 # comfort2
 
-This is a standalone Comfort to MQTT bridge for Cytech's Comfort II Ultra Alarm system with UCM/ETH03 module primarily intended to integrate with Home Assistant (or OpenHAB or other MQTT compatible systems). It can run on a Raspberry Pi and other systems with Python 3 support.
+This is a standalone Comfort to MQTT bridge for Cytech's Comfort II Ultra Alarm system with UCM/ETH03 (or ETH02) module primarily intended to integrate with Home Assistant (or OpenHAB or other MQTT compatible systems). It can run on a Raspberry Pi and other systems with Python 3 support.
 
 With Home Assistant, you can further extend the Comfort system with more complex logic, inputs, outputs and actions. Using virtual inputs, you can define additional zones in Comfort triggered by any sensor available in your Home Assistant setup. Or vice-versa, having Comfort trigger any action in your Home Assistant setup.
 
@@ -22,12 +22,12 @@ MQTTBROKERPORT = 1883
 MQTTUSERNAME = ""
 MQTTPASSWORD = ""
 COMFORTIP = "192.168.123.88"
-COMFORTPORT = 8008
+COMFORTPORT = 1001
 PINCODE = "1234"
 ```
 - set MQTTBROKERIP, MQTTBROKERPORT to your Home Assistant IP address
 - set MQTTUSERNAME, MQTTPASSWORD if your Home Assistant MQTT broker requires authentication
-- set COMFORTIP, COMFORTPORT to your Comfort ETH03 IP address
+- set COMFORTIP, COMFORTPORT to your Comfort ETH02/ETH03 IP address (default ports are 1001,1002)
 - set PINCODE to your Comfort PIN code
 
 # MQTT
@@ -162,7 +162,7 @@ Sends notifications to your phone if alarm state changes
 ```
 # Running
 
-Make sure nothing else is connected to your Comfort system via ETH03 as only one connection is allowed.
+Make sure nothing else is connected to your Comfort system via ETH02/ETH03 on the specified port.
 ```
 python3 comfort2.py
 ```
@@ -178,7 +178,7 @@ with the following content:
 ```
 [Unit]
 Description=Comfort 2
-After=home-assistant@pi.service
+After=network-online.target
 
 [Service]
 Type=simple
