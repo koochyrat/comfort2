@@ -69,6 +69,15 @@ class ComfortIPInputActivationReport(object):
             self.input = int(input)
             self.state = int(state)
 
+class ComfortCTCounterActivationReport(object): # in format CT1EFF00 ie CT (counter) 1E = 30; state FF00 = 65280
+    def __init__(self, datastr="", input=0, state=0):
+        if datastr:
+            self.counter = int(datastr[2:4], 16)
+            self.state = int(datastr[4:6], 16) # Comfort code document says always 4 digits
+        else:
+            self.counter = int(counter)
+            self.state = int(state)
+			
 class ComfortOPOutputActivationReport(object):
     def __init__(self, datastr="", output=0, state=0):
         if datastr:
@@ -185,6 +194,8 @@ class Comfort2(mqtt.Client):
             self.subscribe(ALARMINPUTCOMMANDTOPIC % i)
         for i in range(1, ALARMNUMBEROFFLAGS + 1):
             self.subscribe(ALARMFLAGCOMMANDTOPIC % i)
+        for i in range(1, ALARMNUMBEROFCOUNTERS + 1):
+            self.subscribe(ALARMCOUNTERCOMMANDTOPIC % i)	
         self.readcurrentstate()
 
     def on_disconnect(self, client, userdata, rc):
@@ -222,6 +233,11 @@ class Comfort2(mqtt.Client):
             state = int(msgstr)
             if self.connected:
                 self.comfortsock.sendall(("\x03F!%02X%02X\r" % (flag, state)).encode())
+        elif msg.topic.startswith(DOMAIN+"/counter") and msg.topic.endswith("/set"): # counter set
+            counter = int(msg.topic.split("/")[1][7:])
+            state = int(msgstr)
+            if self.connected:
+                self.comfortsock.sendall(("\x03C!%02X%02X00\r" % (counter, state)).encode()) # counter needs 16 bit number
 
     def on_publish(self, client, obj, mid):
         #print("mid: " + str(mid))
@@ -328,6 +344,10 @@ class Comfort2(mqtt.Client):
                                 ipMsg = ComfortIPInputActivationReport(line[1:])
                                 print("input %d state %d" % (ipMsg.input, ipMsg.state))
                                 self.publish(ALARMINPUTTOPIC % ipMsg.input, ipMsg.state)
+                            elif line[1:3] == "CT":
+                                ipMsgCT = ComfortCTCounterActivationReport(line[1:])
+                                print("counter %d state %d" % (ipMsgCT.counter, ipMsgCT.state))
+                                self.publish(ALARMCOUNTERINPUTRANGE % ipMsgCT.counter, ipMsgCT.state)
                             elif line[1:3] == "Z?":
                                 zMsg = ComfortZ_ReportAllZones(line[1:])
                                 for ipMsgZ in zMsg.inputs:
