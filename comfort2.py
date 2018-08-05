@@ -42,6 +42,10 @@ ALARMNUMBEROFFLAGS = 255    #set this according to your system
 ALARMFLAGTOPIC = DOMAIN+"/flag%d"   #flag1,flag2,...flag255
 ALARMFLAGCOMMANDTOPIC = DOMAIN+"/flag%d/set" #flag1/set,flag2/set,... flag255/set
 
+ALARMNUMBEROFCOUNTERS = 255        # set according to system
+ALARMCOUNTERINPUTRANGE = DOMAIN+"/counter%d"  #each counter represents a CBus value
+ALARMCOUNTERCOMMANDTOPIC = DOMAIN+"/counter%d/set" # set the counter to a value for between 0 (off) to 255 (full on)
+
 MQTTBROKERIP = "localhost"
 MQTTBROKERPORT = 1883
 MQTTUSERNAME = ""
