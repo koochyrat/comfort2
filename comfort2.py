@@ -214,6 +214,8 @@ class Comfort2(mqtt.Client):
             if self.connected:
                 if msgstr == "ARM_HOME":
                     self.comfortsock.sendall(("\x03m!03"+self.comfort_pincode+"\r").encode()) #arm to 03 day mode
+                elif msgstr == "ARM_NIGHT":
+                    self.comfortsock.sendall(("\x03m!02"+self.comfort_pincode+"\r").encode()) #arm to 02 night mode
                 elif msgstr == "ARM_AWAY":
                     self.comfortsock.sendall(("\x03m!01"+self.comfort_pincode+"\r").encode()) #arm to 01 away mode
                 elif msgstr == "DISARM":
